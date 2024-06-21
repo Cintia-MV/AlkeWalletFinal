@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Integrar viewModel en el diseño -->
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.alkewalletfinal.viewModel.LoginViewModel" />
+
+        <variable
+            name="lifecycleOwner"
+            type="androidx.lifecycle.LifecycleOwner" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.LoginFragment">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/fondo_avion">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="350dp"
+                android:layout_height="339dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.488"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.267">
+
+                <TextView
+                    android:id="@+id/loginP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="80dp"
+                    android:fontFamily="@font/jua"
+                    android:text="@string/login"
+                    android:textAlignment="center"
+                    android:textColor="@color/plomoOscuro"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/emailP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jua"
+                    android:text="@string/email"
+                    android:textColor="@color/plomoOscuro"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/hintEmailP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/redondear_borde_form"
+                    android:ems="10"
+                    android:fontFamily="@font/jua"
+                    android:hint="@string/email_hint"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="8dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/claveP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jua"
+                    android:text="@string/clave"
+                    android:textColor="@color/plomoOscuro" />
+
+                <EditText
+                    android:id="@+id/claveHintP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/redondear_borde_form"
+                    android:ems="10"
+                    android:fontFamily="@font/jua"
+                    android:hint="@string/clave_hint"
+                    android:inputType="textPassword"
+                    android:paddingLeft="8dp"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/recClaveP3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/jua"
+                    android:text="@string/olvido_clave"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/azul" />
+
+                <TextView
+                    android:id="@+id/errorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/andika_new_basic"
+                    android:gravity="center_horizontal"
+                    android:textColor="#BA0505"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnP3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+                app:layout_constraintVertical_bias="0.308" />
+
+            <TextView
+                android:id="@+id/crearCtaP3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/jua"
+                android:text="@string/crear_cuenta"
+                android:textColor="@color/azul"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnP3"
+                app:layout_constraintVertical_bias="0.231" />
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

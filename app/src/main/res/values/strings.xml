@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">AlkeWalletFinal</string>
+
+    <string name="alke_wallet">AlkeWallet</string>
+    <string name="texto_p2">El lugar más seguro para tu dinero</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="tiene_cuenta">Ya tiene cuenta?</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="email">Email</string>
+    <string name="email_hint">Ingresa tu email</string>
+    <string name="clave">Contraseña</string>
+    <string name="clave_hint">Ingresa tu contraseña</string>
+    <string name="olvido_clave">Olvidaste tu contraseña?</string>
+    <string name="titulo_p4">Registrarse y empezar a transferir</string>
+    <string name="nombre">Nombre</string>
+    <string name="nombre_hint">Ingresar nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="apellido_hint">Ingresar apellido</string>
+    <string name="reingresar_clave">Reingresar contraseña</string>
+    <string name="reingr_clave_int">Reingresar contraseña</string>
+    <string name="inicio">Inicio</string>
+    <string name="saludo">Hola, Arnold!</string>
+    <string name="saldo">Saldo Total</string>
+    <string name="enviar_dinero">Enviar Dinero</string>
+    <string name="ingresar_dinero">Ingresar dinero</string>
+    <string name="historial_trans">Últimas transacciones</string>
+    <string name="sin_transacciones">¡No hay transacciones registradas!</string>
+    <string name="mi_perfil">Mi perfil</string>
+    <string name="mi_informacion">Mi información</string>
+    <string name="mis_tarjetas">Mis tarjetas</string>
+    <string name="opciones">Opciones</string>
+    <string name="centro_ayuda">Centro de ayuda</string>
+    <string name="salir">Cerrar Sesión</string>
+    <string name="cant_enviar">Cantidad a transferir</string>
+    <string name="monto">Ingrese monto</string>
+    <string name="notas">Notas de transferencia</string>
+    <string name="mensaje_trans">Agregar notas de transferencia</string>
+    <string name="cant_ingresar">Cantidad a ingresar</string>
+
+
+    <!-- Usuarios -->
+    <string name="user">Arnold Shortman</string>
+    <string name="user_1">Gerald Johanssen</string>
+    <string name="user_2">Helga Pataki</string>
+    <string name="user_3">Phillip Shortman</string>
+    <string name="user_4">Phoebe Heyerdahl</string>
+    <string name="user_5">Gertie Pookie</string>
+    <string name="email_user5">pookie4040@mail.com</string>
+    <string name="email_user1">geralps118@mail.com</string>
+
+    <!-- Montos-->
+    <string name="Saldo_dinero">$350.000</string>
+    <string name="trans_1">-$15.000</string>
+    <string name="trans_2">+$44.000</string>
+    <string name="trans_3"> +$18.500</string>
+    <string name="trans_4">-$10.000</string>
+    <string name="trans_5">+$61.000</string>
+
+    <!-- Fecha transacciones-->
+    <string name="fecha_1">Oct 14, 10:24 AM</string>
+    <string name="fecha_2">Oct 12, 02:13 PM</string>
+    <string name="fecha_3">Oct 11, 11:19 AM</string>
+    <string name="fecha_4">Oct 07, 09:10 PM</string>
+    <string name="fecha_5">Oct 04, 08:45 AM</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

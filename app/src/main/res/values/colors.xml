@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="azul">#1A87DD</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="celeste">#63B8FC</color>
+    <color name="plomoOscuro">#1A1A1A</color>
+    <color name="verde">#8BF116</color>
+    <color name="colorAccent">#D1CDCD</color>
+    <color name="plomo">#494A4A</color>
+    <color name="plomoClaro">#9E9E9E</color>
+    <color name="plomoMasClaro">#F3F4F5</color>
+</resources>

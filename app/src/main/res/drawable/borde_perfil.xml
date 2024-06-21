@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/plomoMasClaro" />
+    <corners android:radius="12dp" /> <!-- Ajusta el radio según el nivel de redondez deseado -->
+    <stroke
+        android:width="2dp"
+    android:color="@color/plomoMasClaro" /> <!-- Color del borde -->
+</shape>
