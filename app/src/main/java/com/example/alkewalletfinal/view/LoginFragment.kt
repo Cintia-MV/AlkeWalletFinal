@@ -60,6 +60,7 @@ class LoginFragment : Fragment() {
                     binding.errorTextView.visibility = View.GONE
                     Toast.makeText(requireContext(), "¡Sesión iniciada con éxito!", Toast.LENGTH_LONG).show()
                     // Navegar al fragmento HomePage
+                    findNavController().navigate(R.id.action_loginFragment_to_homePageFragment)
 
                 }
             }
