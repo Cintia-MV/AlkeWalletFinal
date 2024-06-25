@@ -5,13 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentHomePageBinding
+import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.viewModel.HomeViewModel
+import com.example.alkewalletfinal.viewModel.HomeViewModelFactory
 
 
 class HomePageFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var authManager: AuthManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -27,6 +34,21 @@ class HomePageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+       authManager = AuthManager(requireContext())
+        viewModel = ViewModelProvider(this, HomeViewModelFactory(authManager)).get(HomeViewModel::class.java)
+
+        viewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer { userResponse ->
+
+
+           userResponse?.let {
+               binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
+           }
+        })
+
+        viewModel.getUserData()
+
+        //HASTA AQUÍ VOY BIEN********************************************
 
         //Clic en la imagen para navegar hacia la configuración del perfil
        /* binding.imgArnold.setOnClickListener{

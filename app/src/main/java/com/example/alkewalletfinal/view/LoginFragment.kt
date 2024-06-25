@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentLoginBinding
+import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.viewModel.ErroresLogin
 import com.example.alkewalletfinal.viewModel.LoginViewModel
 import com.example.alkewalletfinal.viewModel.LoginViewModelFactory
@@ -36,12 +37,22 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         // Inicializa el ViewModel.
         viewModel = ViewModelProvider(this, LoginViewModelFactory(requireContext()))
             .get(LoginViewModel::class.java)
         // Asigna el ViewModel al binding y establece el lifecycleOwner.
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+       /* viewModel.loginResponse.observe(viewLifecycleOwner){loginResponse ->
+            loginResponse?.accessToken?.let { accessToken ->
+                val bundle = Bundle().apply {
+                    putString("accessToken", accessToken)
+                }
+
+            }
+        }*/
 
         // Observa los cambios en los errores de login.
         viewModel.loginError.observe(viewLifecycleOwner){ error ->
@@ -71,6 +82,7 @@ class LoginFragment : Fragment() {
                 }
             }
         }
+
 
         //Botón para iniciar sesión
         binding.btnP3.setOnClickListener {

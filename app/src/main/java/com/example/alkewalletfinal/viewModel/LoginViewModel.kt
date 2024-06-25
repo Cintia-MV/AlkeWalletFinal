@@ -34,6 +34,10 @@ class LoginViewModel (context: Context) : ViewModel(){
     private val _loginResponse = MutableLiveData<LoginResponse?>()
     val loginResponse: LiveData<LoginResponse?> get() = _loginResponse
 
+    // LiveData para observar el éxito del login
+    private val _loginSuccess = MutableLiveData<Boolean>()
+    val loginSuccess: LiveData<Boolean> get() = _loginSuccess
+
     private val authManager = AuthManager(context)
 
     // Método para validar las credenciales del usuario.
@@ -76,6 +80,7 @@ class LoginViewModel (context: Context) : ViewModel(){
                             authManager.saveToken(loginResponse.accessToken)
                             _loginResponse.value = response.body()
                             _loginError.value = null
+                            _loginSuccess.value = true
 
                             Log.d("LoginViewModel", "Token recibido: ${loginResponse.accessToken}")
                         }
