@@ -1,4 +1,4 @@
-package com.example.alkewalletfinal.model
+package com.example.alkewalletfinal.model.response
 
 import com.google.gson.annotations.SerializedName
 

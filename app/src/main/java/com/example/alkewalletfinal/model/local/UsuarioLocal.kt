@@ -1,14 +1,17 @@
-package com.example.alkewalletfinal.model
+package com.example.alkewalletfinal.model.local
 
 import com.google.gson.annotations.SerializedName
 
-data class UserRequest(
-
+data class UsuarioLocal(
+    val id: Long,
     @SerializedName("first_name")
     val nombre: String,
     @SerializedName("last_name")
     val apellido: String,
     val email:String?,
     val password: String?,
-    val roleId: Int
+    val points: Int,
+    val roleId: Int,
+    val createdAt: String,
+    val updatedAt: String
 )

@@ -12,6 +12,7 @@ import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentLoginBinding
 import com.example.alkewalletfinal.viewModel.ErroresLogin
 import com.example.alkewalletfinal.viewModel.LoginViewModel
+import com.example.alkewalletfinal.viewModel.LoginViewModelFactory
 
 
 class LoginFragment : Fragment() {
@@ -36,7 +37,8 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Inicializa el ViewModel.
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this, LoginViewModelFactory(requireContext()))
+            .get(LoginViewModel::class.java)
         // Asigna el ViewModel al binding y establece el lifecycleOwner.
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -54,6 +56,10 @@ class LoginFragment : Fragment() {
                 }
                 ErroresLogin.credencialesIncorrectas -> {
                     binding.errorTextView.text = "Email o contraseña incorrectos"
+                    binding.errorTextView.visibility = View.VISIBLE
+                }
+                ErroresLogin.errorDeRed -> {
+                    binding.errorTextView.text = "Error de red, por favor intente nuevamente"
                     binding.errorTextView.visibility = View.VISIBLE
                 }
                 null -> {

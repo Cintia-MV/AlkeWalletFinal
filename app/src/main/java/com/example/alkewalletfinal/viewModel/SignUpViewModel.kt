@@ -3,8 +3,7 @@ package com.example.alkewalletfinal.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.alkewalletfinal.model.UserRequest
-import com.example.alkewalletfinal.model.UserResponse
+import com.example.alkewalletfinal.model.response.UserRequest
 
 enum class ErroresSignUp {
     NOMBRE_INVALIDO,

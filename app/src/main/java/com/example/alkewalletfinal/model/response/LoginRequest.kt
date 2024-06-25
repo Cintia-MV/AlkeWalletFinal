@@ -1,4 +1,4 @@
-package com.example.alkewalletfinal.model
+package com.example.alkewalletfinal.model.response
 
 data class LoginRequest(val email:String, val password: String){
     companion object {
