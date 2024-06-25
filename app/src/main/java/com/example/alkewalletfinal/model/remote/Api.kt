@@ -2,6 +2,7 @@ package com.example.alkewalletfinal.model.remote
 
 import com.example.alkewalletfinal.model.response.LoginRequest
 import com.example.alkewalletfinal.model.response.LoginResponse
+import com.example.alkewalletfinal.model.response.UserRequest
 import com.example.alkewalletfinal.model.response.UserResponse
 import com.example.alkewalletfinal.model.response.Usuario
 import retrofit2.Call
@@ -21,5 +22,5 @@ interface Api {
 
     //Crear usuario
     @POST("/users")
-    fun createUser(@Body usuario: Usuario): Call<Usuario>
+    fun createUser(@Body usuario: UserRequest): Call<UserRequest>
 }

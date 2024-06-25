@@ -53,9 +53,9 @@ class SignUpFragment : Fragment() {
                     ErroresSignUp.APELLIDO_INVALIDO -> mostrarMensajeError("Debe ingresar apellido", R.id.errorApellido)
                     ErroresSignUp.EMAIL_INVALIDO -> mostrarMensajeError("Ingresar correo electrónico válido", R.id.errorEmail)
                     ErroresSignUp.CLAVE_INVALIDA -> mostrarMensajeError("La clave debe ser mayor a 6 caracteres", R.id.errorClave)
+                    ErroresSignUp.ERROR_CREAR_USUARIO -> mostrarMensajeError("Error al crear usuario", R.id.errorGeneral)
                 }
             }
-
         }
 
         // Observa el éxito del registro.

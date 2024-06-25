@@ -3,13 +3,18 @@ package com.example.alkewalletfinal.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.UserRequest
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 enum class ErroresSignUp {
     NOMBRE_INVALIDO,
     APELLIDO_INVALIDO,
     EMAIL_INVALIDO,
-    CLAVE_INVALIDA
+    CLAVE_INVALIDA,
+    ERROR_CREAR_USUARIO
 }
 class SignUpViewModel: ViewModel() {
     // LiveData para observar el estado de los errores durante el registro.
@@ -46,9 +51,25 @@ class SignUpViewModel: ViewModel() {
         val nuevoUsuario = UserRequest(nombre, apellido, email, clave, roledId)
 
 
-        // Retornar null si no hay errores
-        _signUpError.value = null
-        _signUpSuccess.value = true
+        //Llamar al método en Retrofit para crear el usuario
+        val api = RetrofitClient.retrofitInstance()
+        api.createUser(nuevoUsuario).enqueue(object : Callback<UserRequest>{
+            override fun onResponse(call: Call<UserRequest>, response: Response<UserRequest>) {
+                if (response.isSuccessful){
+                    // Retornar null si no hay errores
+                    _signUpError.value = null
+                    _signUpSuccess.value = true
+                } else {
+                    _signUpError.value = ErroresSignUp.ERROR_CREAR_USUARIO
+                }
+            }
+
+            override fun onFailure(call: Call<UserRequest>, t: Throwable) {
+                _signUpError.value = ErroresSignUp.ERROR_CREAR_USUARIO
+            }
+        })
+
+
     }
 
     //Metodo para validar nombre
