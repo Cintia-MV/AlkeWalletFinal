@@ -1,10 +1,10 @@
 package com.example.alkewalletfinal.model.remote
 
+import com.example.alkewalletfinal.model.response.AccountsResponse
 import com.example.alkewalletfinal.model.response.LoginRequest
 import com.example.alkewalletfinal.model.response.LoginResponse
 import com.example.alkewalletfinal.model.response.UserRequest
 import com.example.alkewalletfinal.model.response.UserResponse
-import com.example.alkewalletfinal.model.response.Usuario
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -23,4 +23,7 @@ interface Api {
     //Crear usuario
     @POST("/users")
     fun createUser(@Body usuario: UserRequest): Call<UserRequest>
+
+    @GET("accounts/me")
+    fun infoAccounts(@Header("Authorization") token: String): Call<List<AccountsResponse>>
 }

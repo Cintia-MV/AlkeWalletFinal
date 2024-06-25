@@ -93,7 +93,6 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/jua"
                         android:paddingLeft="20dp"
-                        android:text="@string/Saldo_dinero"
                         android:textColor="@color/white"
                         android:textSize="40dp" />
 

@@ -1,6 +1,7 @@
 package com.example.alkewalletfinal.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +44,16 @@ class HomePageFragment : Fragment() {
 
            userResponse?.let {
                binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
+               Log.d("HomePageFragment", "User: ${userResponse.firstName} ${userResponse.lastName}")
            }
+        })
+
+        viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
+            cuenta?.let {
+                val cuentas = cuenta[0]
+                binding.saldoPesosP5.text = "$ ${cuentas.money}"
+                Log.d("HomePageFragment", "Money: ${cuentas.money}")
+            }
         })
 
         viewModel.getUserData()
