@@ -10,8 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentRequestBinding
+import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.model.response.TransactionsRequest
 import com.example.alkewalletfinal.viewModel.ErroresIngresoMonto
 import com.example.alkewalletfinal.viewModel.RequestViewModel
+import com.example.alkewalletfinal.viewModel.RequestViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 class RequestFragment : Fragment() {
     private lateinit var binding: FragmentRequestBinding
     private lateinit var viewModel: RequestViewModel
+    private lateinit var authManager: AuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +42,11 @@ class RequestFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Inicializar AuthManager
+        authManager = AuthManager(requireContext())
+
         // Inicializar el ViewModel
-        viewModel = ViewModelProvider(this).get(RequestViewModel::class.java)
+        viewModel = ViewModelProvider(this, RequestViewModelFactory(authManager)).get(RequestViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -58,12 +65,37 @@ class RequestFragment : Fragment() {
         // Observar el éxito del ingreso de monto y manejarlo.
         viewModel.ingresoMontoExitoso.observe(viewLifecycleOwner) { exito ->
             if (exito) {
-                mostrarExitoMonto("Ingreso realizado con éxito")
+                val amount = binding.ingresarDinero.text.toString().toLong()
+                val concept = binding.notaIngresar.text.toString()
+                val type = "topup"
+                val accountId = 2270L
+                val userId = 3548L
+                val toAccountId = 2271L
+
+                val transaccion = TransactionsRequest(
+                    amount = amount,
+                    concept = concept,
+                    type = type,
+                    accountId = accountId,
+                    userId = userId,
+                    toAccountId = toAccountId
+                )
+
+                viewModel.createTransaction(transaccion)
+
+            }
+        }
+
+        // Observar el resultado de la transacción
+        viewModel.transactionReult.observe(viewLifecycleOwner){result ->
+            if (result){
+                mostrarExitoMonto("Transacción realizada con éxito")
                 CoroutineScope(Dispatchers.Main).launch {
                     delay(3000)
-                    view.findNavController()
-                        .navigate(R.id.action_requestFragment_to_homePageFragment)
+                    view.findNavController().navigate(R.id.action_requestFragment_to_homePageFragment)
                 }
+            } else {
+                mostrarErrorMonto("Error al realizar la transacción")
             }
         }
 

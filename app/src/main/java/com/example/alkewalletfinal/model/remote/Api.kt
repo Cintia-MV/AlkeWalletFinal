@@ -33,5 +33,5 @@ interface Api {
     fun infoTransactions(@Header("Authorization") token: String): Call<TransactionsResponse>
 
     @POST("transactions")
-    fun createTransaction(@Body transaccion: TransactionsRequest): Call<TransactionsResponse>
+    fun createTransaction(@Header("Authorization") authToken: String, @Body transaccion: TransactionsRequest): Call<TransactionsResponse>
 }
