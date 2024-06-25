@@ -9,18 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alkewalletfinal.databinding.ItemListBinding
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
+import com.example.alkewalletfinal.model.response.Transactions
 
 class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransaccionesVH>() {
-    private var listaTransaccion = listOf<TransactionsLocal>()
-    private val transaccionSelected = MutableLiveData<TransactionsLocal>()
+    private var listaTransaccion = listOf<Transactions>()
+    private val transaccionSelected = MutableLiveData<Transactions>() //Cambiar a local
 
 
-    fun actualizar(transaccion: List<TransactionsLocal>){
+    fun actualizar(transaccion: List<Transactions>){
         listaTransaccion = transaccion
         notifyDataSetChanged()
     }
 
-    fun seleccionarTransaccion(): LiveData<TransactionsLocal> = transaccionSelected
+    fun seleccionarTransaccion(): LiveData<Transactions> = transaccionSelected
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaTransaccionesVH {
@@ -39,7 +40,7 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
     inner class ListaTransaccionesVH(private val binding: ItemListBinding):
             RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
-                fun bind(transaccion: TransactionsLocal){
+                fun bind(transaccion: Transactions){
                     Glide.with(binding.imgUsuario).load(R.drawable.foto3).centerCrop().into(binding.imgUsuario)
                     binding.nombreUsuario.text = transaccion.concept
                     binding.fecha.text = transaccion.date

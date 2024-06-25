@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.alkewalletfinal.HistorialAdapter
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentHomePageBinding
 import com.example.alkewalletfinal.model.AuthManager
@@ -53,6 +55,16 @@ class HomePageFragment : Fragment() {
                 val cuentas = cuenta[0]
                 binding.saldoPesosP5.text = "$ ${cuentas.money}"
                 Log.d("HomePageFragment", "Money: ${cuentas.money}")
+            }
+        })
+
+        val adapter = HistorialAdapter()
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        viewModel.transactionsResponseLiveData.observe(viewLifecycleOwner, Observer {transaction ->
+            transaction?.let {
+                adapter.actualizar(it)
             }
         })
 
