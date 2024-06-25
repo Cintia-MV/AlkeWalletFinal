@@ -3,6 +3,7 @@ package com.example.alkewalletfinal.model.remote
 import com.example.alkewalletfinal.model.response.AccountsResponse
 import com.example.alkewalletfinal.model.response.LoginRequest
 import com.example.alkewalletfinal.model.response.LoginResponse
+import com.example.alkewalletfinal.model.response.TransactionsResponse
 import com.example.alkewalletfinal.model.response.UserRequest
 import com.example.alkewalletfinal.model.response.UserResponse
 import retrofit2.Call
@@ -26,4 +27,7 @@ interface Api {
 
     @GET("accounts/me")
     fun infoAccounts(@Header("Authorization") token: String): Call<List<AccountsResponse>>
+
+    @GET("transactions")//Quizas tenga que cambiar el call a list
+    fun infoTransactions(@Header("Authorization") token: String): Call<TransactionsResponse>
 }

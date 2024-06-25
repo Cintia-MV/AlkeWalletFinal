@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.AccountsResponse
+import com.example.alkewalletfinal.model.response.Transactions
+import com.example.alkewalletfinal.model.response.TransactionsResponse
 import com.example.alkewalletfinal.model.response.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +18,7 @@ class HomeViewModel(private val authManager: AuthManager): ViewModel() {
 
     val userResponseLiveData: MutableLiveData<UserResponse> = MutableLiveData()
     val accountsResponse: MutableLiveData<List<AccountsResponse>> = MutableLiveData()
+    val transactionsResponseLiveData: MutableLiveData<List<Transactions>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
     fun getUserData() {
@@ -57,6 +60,27 @@ class HomeViewModel(private val authManager: AuthManager): ViewModel() {
                     override fun onFailure(call: Call<List<AccountsResponse>>, t: Throwable) {
                         errorLiveData.postValue("Error: ${t.message}")
                         Log.e("HomeViewModel", "Account Error: ${t.message}")
+                    }
+                })
+
+
+            RetrofitClient.retrofitInstance(authToken).infoTransactions("Bearer $authToken")
+                .enqueue(object : Callback<TransactionsResponse>{
+                    override fun onResponse(
+                        call: Call<TransactionsResponse>,
+                        response: Response<TransactionsResponse>
+                    ) {
+                        if (response.isSuccessful){
+                            transactionsResponseLiveData.postValue(response.body()?.data)
+                            Log.d("HomeViewModel", "Transactions response: ${response.body()}")
+                        } else {
+                            errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TransactionsResponse>, t: Throwable) {
+                        errorLiveData.postValue("Error: ${t.message}")
+                        Log.e("HomeViewModel", "Transactions Error: ${t.message}")
                     }
                 })
         }

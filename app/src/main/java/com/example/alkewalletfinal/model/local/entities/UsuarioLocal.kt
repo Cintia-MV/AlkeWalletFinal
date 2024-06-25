@@ -1,8 +1,12 @@
-package com.example.alkewalletfinal.model.local
+package com.example.alkewalletfinal.model.local.entities
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "tabla_usuario")
 data class UsuarioLocal(
+    @PrimaryKey
     val id: Long,
     @SerializedName("first_name")
     val nombre: String,
