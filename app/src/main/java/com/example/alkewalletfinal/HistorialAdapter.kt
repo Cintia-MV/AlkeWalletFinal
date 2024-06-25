@@ -43,7 +43,7 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
                 fun bind(transaccion: Transactions){
                     Glide.with(binding.imgUsuario).load(R.drawable.foto3).centerCrop().into(binding.imgUsuario)
                     binding.nombreUsuario.text = transaccion.concept
-                    binding.fecha.text = transaccion.date
+                    binding.fecha.text = transaccion.createdAt
                     binding.monto.text = transaccion.amount
 
                     itemView.setOnClickListener(this)

@@ -70,21 +70,23 @@ class HomePageFragment : Fragment() {
 
         viewModel.getUserData()
 
-        //HASTA AQUÍ VOY BIEN********************************************
+
 
         //Clic en la imagen para navegar hacia la configuración del perfil
-       /* binding.imgArnold.setOnClickListener{
-            findNavController().navigate(R.id.action_homePageFragment2_to_profileFragment)
+        binding.imgArnold.setOnClickListener{
+            findNavController().navigate(R.id.action_homePageFragment_to_profileFragment)
         }
+        /*
+                //Clic en botón enviar dinero para navegar hacia la transacción
+                hPBinding.btnEnviarDinP5.setOnClickListener {
+                    view.findNavController().navigate(R.id.action_homePageFragment2_to_sendFragment)
+                }
 
-        //Clic en botón enviar dinero para navegar hacia la transacción
-        hPBinding.btnEnviarDinP5.setOnClickListener {
-            view.findNavController().navigate(R.id.action_homePageFragment2_to_sendFragment)
-        }
+         */
 
-        hPBinding.btnIngresarDinP5.setOnClickListener {
-            view.findNavController().navigate(R.id.action_homePageFragment2_to_requestFragment)
-        }*/
+                binding.btnIngresarDinP5.setOnClickListener {
+                    findNavController().navigate(R.id.action_homePageFragment_to_requestFragment)
+                }
     }
 
 
