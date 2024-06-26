@@ -12,8 +12,8 @@ data class UsuarioLocal(
     val nombre: String,
     @SerializedName("last_name")
     val apellido: String,
-    val email:String?,
-    val password: String?,
+    val email:String,
+    val password: String,
     val points: Int,
     val roleId: Int,
     val createdAt: String,

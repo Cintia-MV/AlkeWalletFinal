@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.LoginRequest
 import com.example.alkewalletfinal.model.response.LoginResponse
@@ -24,7 +25,7 @@ enum class ErroresLogin{
     credencialesIncorrectas,
     errorDeRed
 }
-class LoginViewModel (context: Context) : ViewModel(){
+class LoginViewModel (private val repository: Repository, context: Context) : ViewModel(){
 
     // LiveData para observar el estado de la validación
     private val _loginError = MutableLiveData<ErroresLogin?>()
@@ -68,31 +69,27 @@ class LoginViewModel (context: Context) : ViewModel(){
     }
 
     private fun iniciarSesion(email: String, password: String){
-        val api = RetrofitClient.retrofitInstance()
+
         val loginRequest = LoginRequest(email, password)
 
         viewModelScope.launch {
-            api.login(loginRequest).enqueue(object : Callback<LoginResponse>{
-                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    if (response.isSuccessful){
-                        val loginResponse = response.body()
-                        if(loginResponse != null){
-                            authManager.saveToken(loginResponse.accessToken)
-                            _loginResponse.value = response.body()
-                            _loginError.value = null
-                            _loginSuccess.value = true
+            repository.login(loginRequest) { success, loginResponse, error ->
+                if (success){
+                    loginResponse?.let {
+                        authManager.saveToken(it.accessToken)
+                        _loginResponse.value = it
+                        _loginError.value = null
+                        _loginSuccess.value = true
 
-                            Log.d("LoginViewModel", "Token recibido: ${loginResponse.accessToken}")
-                        }
-                    } else{
-                        _loginError.value = ErroresLogin.credencialesIncorrectas
+                        Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
+                    }
+                } else {
+                    _loginError.value = when (error){
+                        "Response is not successful" -> ErroresLogin.credencialesIncorrectas
+                        else -> ErroresLogin.errorDeRed
                     }
                 }
-
-                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    _loginError.value = ErroresLogin.errorDeRed
-                }
-            })
+            }
         }
     }
 }

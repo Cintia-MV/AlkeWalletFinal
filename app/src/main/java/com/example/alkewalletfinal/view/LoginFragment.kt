@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentLoginBinding
 import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.model.Repository
+import com.example.alkewalletfinal.model.local.WalletDataBase
 import com.example.alkewalletfinal.viewModel.ErroresLogin
 import com.example.alkewalletfinal.viewModel.LoginViewModel
 import com.example.alkewalletfinal.viewModel.LoginViewModelFactory
@@ -37,22 +39,22 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Inicializar AuthManager
+        val authManager = AuthManager(requireContext())
+
+        // Inicializa el WalletDao desde la base de datos.
+        val walletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
+
+        // Inicializa el Repository con el WalletDao y el AuthManager.
+        val repository = Repository(walletDao, authManager)
 
         // Inicializa el ViewModel.
-        viewModel = ViewModelProvider(this, LoginViewModelFactory(requireContext()))
+        viewModel = ViewModelProvider(this, LoginViewModelFactory(requireContext(), repository))
             .get(LoginViewModel::class.java)
         // Asigna el ViewModel al binding y establece el lifecycleOwner.
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-       /* viewModel.loginResponse.observe(viewLifecycleOwner){loginResponse ->
-            loginResponse?.accessToken?.let { accessToken ->
-                val bundle = Bundle().apply {
-                    putString("accessToken", accessToken)
-                }
-
-            }
-        }*/
 
         // Observa los cambios en los errores de login.
         viewModel.loginError.observe(viewLifecycleOwner){ error ->
@@ -97,6 +99,5 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
     }
-
 
 }
