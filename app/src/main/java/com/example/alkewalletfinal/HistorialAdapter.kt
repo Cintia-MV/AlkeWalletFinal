@@ -41,10 +41,20 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
             RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
                 fun bind(transaccion: Transactions){
-                    Glide.with(binding.imgUsuario).load(R.drawable.foto3).centerCrop().into(binding.imgUsuario)
+                    Glide.with(binding.imgUsuario).load(R.drawable.userp).centerCrop().into(binding.imgUsuario)
                     binding.nombreUsuario.text = transaccion.concept
                     binding.fecha.text = transaccion.createdAt
                     binding.monto.text = transaccion.amount
+
+                    //Flecha según el tipo de transacción
+                    val imgFlecha = when(transaccion.type){
+                        "topup" -> R.drawable.arrow_greenp
+                        "payment" -> R.drawable.arrow_redp
+                        else -> null
+                    }
+
+                    Glide.with(binding.flecha).load(imgFlecha).centerCrop().into(binding.flecha)
+
 
                     itemView.setOnClickListener(this)
                 }

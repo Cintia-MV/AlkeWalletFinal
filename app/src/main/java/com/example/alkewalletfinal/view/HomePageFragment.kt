@@ -15,7 +15,7 @@ import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentHomePageBinding
 import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.viewModel.HomeViewModel
-import com.example.alkewalletfinal.viewModel.HomeViewModelFactory
+import com.example.alkewalletfinal.viewModel.factory.HomeViewModelFactory
 
 
 class HomePageFragment : Fragment() {
@@ -31,23 +31,29 @@ class HomePageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomePageBinding.inflate(inflater,container, false)
+        binding = FragmentHomePageBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       authManager = AuthManager(requireContext())
-        viewModel = ViewModelProvider(this, HomeViewModelFactory(authManager)).get(HomeViewModel::class.java)
+        authManager = AuthManager(requireContext())
+        viewModel = ViewModelProvider(
+            this,
+            HomeViewModelFactory(authManager)
+        ).get(HomeViewModel::class.java)
 
         viewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer { userResponse ->
 
 
-           userResponse?.let {
-               binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
-               Log.d("HomePageFragment", "User: ${userResponse.firstName} ${userResponse.lastName}")
-           }
+            userResponse?.let {
+                binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
+                Log.d(
+                    "HomePageFragment",
+                    "User: ${userResponse.firstName} ${userResponse.lastName}"
+                )
+            }
         })
 
         viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
@@ -62,7 +68,7 @@ class HomePageFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.transactionsResponseLiveData.observe(viewLifecycleOwner, Observer {transaction ->
+        viewModel.transactionsResponseLiveData.observe(viewLifecycleOwner, Observer { transaction ->
             transaction?.let {
                 adapter.actualizar(it)
             }
@@ -71,22 +77,21 @@ class HomePageFragment : Fragment() {
         viewModel.getUserData()
 
 
-
         //Clic en la imagen para navegar hacia la configuración del perfil
-        binding.imgArnold.setOnClickListener{
+        binding.imgArnold.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_profileFragment)
         }
-        /*
-                //Clic en botón enviar dinero para navegar hacia la transacción
-                hPBinding.btnEnviarDinP5.setOnClickListener {
-                    view.findNavController().navigate(R.id.action_homePageFragment2_to_sendFragment)
-                }
 
-         */
+        //Clic en botón enviar dinero para navegar hacia la transacción
+        binding.btnEnviarDinP5.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_sendFragment)
+        }
 
-                binding.btnIngresarDinP5.setOnClickListener {
-                    findNavController().navigate(R.id.action_homePageFragment_to_requestFragment)
-                }
+
+
+        binding.btnIngresarDinP5.setOnClickListener {
+            findNavController().navigate(R.id.action_homePageFragment_to_requestFragment)
+        }
     }
 
 

@@ -14,7 +14,7 @@ import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.response.TransactionsRequest
 import com.example.alkewalletfinal.viewModel.ErroresIngresoMonto
 import com.example.alkewalletfinal.viewModel.RequestViewModel
-import com.example.alkewalletfinal.viewModel.RequestViewModelFactory
+import com.example.alkewalletfinal.viewModel.factory.RequestViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

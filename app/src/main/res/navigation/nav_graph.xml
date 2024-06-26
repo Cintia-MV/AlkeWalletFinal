@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_homePageFragment_to_requestFragment"
             app:destination="@id/requestFragment" />
+        <action
+            android:id="@+id/action_homePageFragment_to_sendFragment"
+            app:destination="@id/sendFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -77,6 +80,14 @@
         tools:layout="@layout/fragment_request" >
         <action
             android:id="@+id/action_requestFragment_to_homePageFragment"
+            app:destination="@id/homePageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/sendFragment"
+        android:name="com.example.alkewalletfinal.view.SendFragment"
+        android:label="SendFragment" >
+        <action
+            android:id="@+id/action_sendFragment_to_homePageFragment"
             app:destination="@id/homePageFragment" />
     </fragment>
 </navigation>

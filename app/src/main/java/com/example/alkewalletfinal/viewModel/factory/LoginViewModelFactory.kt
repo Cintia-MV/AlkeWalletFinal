@@ -1,9 +1,10 @@
-package com.example.alkewalletfinal.viewModel
+package com.example.alkewalletfinal.viewModel.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.alkewalletfinal.model.Repository
+import com.example.alkewalletfinal.viewModel.LoginViewModel
 
 class LoginViewModelFactory(private val context: Context, private val repository: Repository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

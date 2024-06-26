@@ -1,8 +1,9 @@
-package com.example.alkewalletfinal.viewModel
+package com.example.alkewalletfinal.viewModel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.viewModel.RequestViewModel
 
 class RequestViewModelFactory(private val authManager: AuthManager): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
