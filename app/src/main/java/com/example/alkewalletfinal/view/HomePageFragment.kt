@@ -55,6 +55,8 @@ class HomePageFragment : Fragment() {
         // Inicializa Room para la base de datos local
         val walletDao: WalletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
 
+        val userId = authManager.getUserId()
+
         // Inicializa Repository con las instancias de walletDao y api
         repository = Repository(walletDao, api)
         viewModel = ViewModelProvider(
@@ -92,7 +94,7 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        viewModel.getUserData()
+        viewModel.getUserData(userId)
 
        /* val userId = authManager.getUserId()
         if (userId != -1L){

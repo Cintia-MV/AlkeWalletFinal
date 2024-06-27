@@ -31,13 +31,13 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
     val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun getUserData() {
+    fun getUserData(userId: Long) {
         val token = authManager.getToken()
 
         token?.let { authToken ->
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    fetchUser("Bearer $authToken")
+                    fetchUser("Bearer $authToken", userId)
 
                     fetchAndSaveAccounts("Bearer $authToken")
 
@@ -51,10 +51,16 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
         }
     }
 
-    private suspend fun fetchUser(token: String) {
+    private suspend fun fetchUser(token: String, userId: Long) {
         try {
             repository.fetchAndSaveUser(token)
 
+            // Utiliza el DAO para obtener los datos del usuario por ID
+            repository.getUser(userId).observeForever { user ->
+                user?.let {
+                    _userResponseLiveData.postValue(user)
+                }
+            }
         } catch (e: Exception) {
             Log.e("HomeViewModel", "Exception fetching user: ${e.message}")
             errorLiveData.postValue("Exception fetching user: ${e.message}")

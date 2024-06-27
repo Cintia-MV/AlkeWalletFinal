@@ -40,7 +40,7 @@ fun transactionResponseInter(transaccion: Transactions): TransactionsLocal{
         id = transaccion.id,
         amount = transaccion.amount,
         concept = transaccion.concept,
-        date = transaccion.date,
+        date = transaccion.date ?: "",
         type = transaccion.type,
         accountId = transaccion.accountId,
         userId = transaccion.userId,

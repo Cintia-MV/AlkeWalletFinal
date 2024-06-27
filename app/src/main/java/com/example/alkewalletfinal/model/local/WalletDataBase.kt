@@ -26,7 +26,7 @@ abstract class WalletDataBase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     WalletDataBase::class.java,
-                    "wallet_BDt"
+                    "wallet_BDc"
                 )
                     .build()
                 INSTANCE = instance

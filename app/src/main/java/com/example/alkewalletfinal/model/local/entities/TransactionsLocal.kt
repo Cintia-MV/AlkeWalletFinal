@@ -10,7 +10,7 @@ data class TransactionsLocal(
     val id: Long,
     val amount: String,
     val concept: String,
-    val date: String,
+    val date: String?,
     val type: String,
     val accountId: Long,
     val userId: Long,
