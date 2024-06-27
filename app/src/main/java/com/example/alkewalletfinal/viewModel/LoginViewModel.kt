@@ -68,29 +68,30 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
         return clave.length >= 6
     }
 
-    private fun iniciarSesion(email: String, password: String){
-
+    private fun iniciarSesion(email: String, password: String) {
         val loginRequest = LoginRequest(email, password)
 
         viewModelScope.launch {
-            repository.login(loginRequest) { success, loginResponse, error ->
-                if (success){
-                    loginResponse?.let {
-                        authManager.saveToken(it.accessToken)
-                        _loginResponse.value = it
-                        _loginError.value = null
-                        _loginSuccess.value = true
+            try {
+                val loginResponse = repository.login(loginRequest) // Asegúrate de que el repositorio tenga un método adecuado para esto
 
-                        Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
-                    }
-                } else {
-                    _loginError.value = when (error){
-                        "Response is not successful" -> ErroresLogin.credencialesIncorrectas
-                        else -> ErroresLogin.errorDeRed
-                    }
+                // Procesar la respuesta del repositorio
+                loginResponse?.let {
+                    authManager.saveToken(it.accessToken)
+                    _loginResponse.value = it
+                    _loginError.value = null
+                    _loginSuccess.value = true
+
+                    Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
+                }
+            } catch (e: Exception) {
+                _loginError.value = when (e.message) {
+                    "Response is not successful" -> ErroresLogin.credencialesIncorrectas
+                    else -> ErroresLogin.errorDeRed
                 }
             }
         }
     }
+
 
 }

@@ -8,7 +8,7 @@ import com.example.alkewalletfinal.model.local.entities.AccountsLocal
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
 import com.example.alkewalletfinal.model.local.entities.UsuarioLocal
 
-@Database(entities = [UsuarioLocal::class, TransactionsLocal::class, AccountsLocal::class], version = 1, exportSchema = false)
+@Database(entities = [UsuarioLocal::class, TransactionsLocal::class, AccountsLocal::class], version = 1, exportSchema = true)
 abstract class WalletDataBase : RoomDatabase() {
 
     abstract fun getWalletDao(): WalletDao
@@ -26,7 +26,7 @@ abstract class WalletDataBase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     WalletDataBase::class.java,
-                    "wallet_BD"
+                    "wallet_BDt"
                 )
                     .build()
                 INSTANCE = instance

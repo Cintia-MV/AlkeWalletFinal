@@ -22,4 +22,8 @@ class AuthManager (private  val context: Context) {
         prefs.edit().remove("user_logged").apply()
     }
 
+    fun getUserId(): Long{
+        return prefs.getLong("user_id", -1)
+    }
+
 }

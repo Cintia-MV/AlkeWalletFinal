@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
+/*
 class RepositoryImpl(private val walletDao: WalletDao, private val apiService: Api) : Repository {
     override suspend fun insertUser(usuarioResponse: UserResponse) {
         val usuarioLocal = usuarioResponseInter(usuarioResponse)
@@ -89,4 +89,4 @@ class RepositoryImpl(private val walletDao: WalletDao, private val apiService: A
 }
 
 
-
+*/

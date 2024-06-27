@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentLoginBinding
 import com.example.alkewalletfinal.model.AuthManager
-import com.example.alkewalletfinal.model.RepositoryImpl
+import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.model.local.WalletDataBase
 import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.viewModel.ErroresLogin
@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
 
         val apiService = RetrofitClient.retrofitInstance()
         // Inicializa el Repository con el WalletDao y el AuthManager.
-        val repository = RepositoryImpl(walletDao, apiService)
+        val repository = Repository(walletDao, apiService)
 
         // Inicializa el ViewModel.
         viewModel = ViewModelProvider(this, LoginViewModelFactory(requireContext(), repository))

@@ -9,13 +9,13 @@ data class UsuarioLocal(
     @PrimaryKey
     val id: Long,
     @SerializedName("first_name")
-    val nombre: String,
+    val firstName: String,
     @SerializedName("last_name")
-    val apellido: String,
+    val lastName: String,
     val email:String,
     val password: String,
     val points: Int,
-    val roleId: Int,
+    val roleid: Int,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String?
 )

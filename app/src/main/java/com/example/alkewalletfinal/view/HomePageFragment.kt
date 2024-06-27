@@ -14,6 +14,11 @@ import com.example.alkewalletfinal.HistorialAdapter
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentHomePageBinding
 import com.example.alkewalletfinal.model.AuthManager
+import com.example.alkewalletfinal.model.Repository
+import com.example.alkewalletfinal.model.local.WalletDao
+import com.example.alkewalletfinal.model.local.WalletDataBase
+import com.example.alkewalletfinal.model.remote.Api
+import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.viewModel.HomeViewModel
 import com.example.alkewalletfinal.viewModel.factory.HomeViewModelFactory
 
@@ -22,6 +27,7 @@ class HomePageFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var authManager: AuthManager
+    private lateinit var repository: Repository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,9 +45,21 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         authManager = AuthManager(requireContext())
+
+        // Obtén el token del AuthManager
+        val token = authManager.getToken()
+
+        // Inicializa la API con Retrofit
+        val api: Api = RetrofitClient.retrofitInstance(token)
+
+        // Inicializa Room para la base de datos local
+        val walletDao: WalletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
+
+        // Inicializa Repository con las instancias de walletDao y api
+        repository = Repository(walletDao, api)
         viewModel = ViewModelProvider(
             this,
-            HomeViewModelFactory(authManager)
+            HomeViewModelFactory(authManager, repository)
         ).get(HomeViewModel::class.java)
 
         viewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer { userResponse ->
@@ -51,7 +69,7 @@ class HomePageFragment : Fragment() {
                 binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
                 Log.d(
                     "HomePageFragment",
-                    "User: ${userResponse.firstName} ${userResponse.lastName}"
+                    "User: ${userResponse.firstName} ${userResponse.firstName}"
                 )
             }
         })
@@ -75,6 +93,15 @@ class HomePageFragment : Fragment() {
         })
 
         viewModel.getUserData()
+
+       /* val userId = authManager.getUserId()
+        if (userId != -1L){
+            viewModel.getUserData(userId)
+        } else {
+            Log.e("HomePageFragment", "User ID is invalid")
+        }*/
+
+
 
 
         //Clic en la imagen para navegar hacia la configuración del perfil

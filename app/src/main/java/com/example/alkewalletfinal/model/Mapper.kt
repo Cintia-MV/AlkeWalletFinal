@@ -11,14 +11,14 @@ import com.example.alkewalletfinal.model.response.UserResponse
 fun usuarioResponseInter(usuario: UserResponse): UsuarioLocal {
     return UsuarioLocal(
         id = usuario.id,
-        nombre = usuario.firstName,
-        apellido = usuario.lastName,
+        firstName = usuario.firstName,
+        lastName = usuario.lastName,
         email = usuario.email,
         password = usuario.password,
         points = usuario.points,
-        roleId = usuario.roleid,
+        roleid = usuario.roleid,
         createdAt = usuario.createdAt,
-        updatedAt = usuario.updateAt
+        updatedAt = usuario.updateAt ?: ""
     )
 }
 

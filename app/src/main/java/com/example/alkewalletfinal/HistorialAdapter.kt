@@ -12,16 +12,16 @@ import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
 import com.example.alkewalletfinal.model.response.Transactions
 
 class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransaccionesVH>() {
-    private var listaTransaccion = listOf<Transactions>()
-    private val transaccionSelected = MutableLiveData<Transactions>() //Cambiar a local
+    private var listaTransaccion = listOf<TransactionsLocal>()
+    private val transaccionSelected = MutableLiveData<TransactionsLocal>() //Cambiar a local
 
 
-    fun actualizar(transaccion: List<Transactions>){
+    fun actualizar(transaccion: List<TransactionsLocal>){
         listaTransaccion = transaccion
         notifyDataSetChanged()
     }
 
-    fun seleccionarTransaccion(): LiveData<Transactions> = transaccionSelected
+    fun seleccionarTransaccion(): LiveData<TransactionsLocal> = transaccionSelected
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaTransaccionesVH {
@@ -40,7 +40,7 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
     inner class ListaTransaccionesVH(private val binding: ItemListBinding):
             RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
-                fun bind(transaccion: Transactions){
+                fun bind(transaccion: TransactionsLocal){
                     Glide.with(binding.imgUsuario).load(R.drawable.userp).centerCrop().into(binding.imgUsuario)
                     binding.nombreUsuario.text = transaccion.concept
                     binding.fecha.text = transaccion.createdAt

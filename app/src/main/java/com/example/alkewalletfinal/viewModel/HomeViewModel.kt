@@ -2,10 +2,15 @@ package com.example.alkewalletfinal.viewModel
 
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
+import com.example.alkewalletfinal.model.local.entities.AccountsLocal
+import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
+import com.example.alkewalletfinal.model.local.entities.UsuarioLocal
 import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.AccountsResponse
 import com.example.alkewalletfinal.model.response.Transactions
@@ -18,75 +23,68 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeViewModel(private val authManager: AuthManager): ViewModel() {
+class HomeViewModel(private val authManager: AuthManager, private val repository: Repository): ViewModel() {
 
-    val userResponseLiveData: MutableLiveData<UserResponse> = MutableLiveData()
-    val accountsResponse: MutableLiveData<List<AccountsResponse>> = MutableLiveData()
-    val transactionsResponseLiveData: MutableLiveData<List<Transactions>> = MutableLiveData()
+    private val _userResponseLiveData: MutableLiveData<UsuarioLocal> = MutableLiveData()
+    val userResponseLiveData: LiveData<UsuarioLocal> get() = _userResponseLiveData
+    val accountsResponse: MutableLiveData<List<AccountsLocal>> = MutableLiveData()
+    val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
     fun getUserData() {
         val token = authManager.getToken()
 
         token?.let { authToken ->
-            RetrofitClient.retrofitInstance(authToken).infoUser("Bearer $authToken")
-                .enqueue(object : Callback<UserResponse> {
-                    override fun onResponse(
-                        call: Call<UserResponse>,
-                        response: Response<UserResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            userResponseLiveData.postValue(response.body())
-                        } else {
-                            errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
-                        }
-                    }
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    fetchUser("Bearer $authToken")
 
-                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                        errorLiveData.postValue("Error: ${t.message}")
-                    }
-                })
+                    fetchAndSaveAccounts("Bearer $authToken")
 
-            RetrofitClient.retrofitInstance(authToken).infoAccounts("Bearer $authToken")
-                .enqueue(object : Callback<List<AccountsResponse>>{
-                    override fun onResponse(
-                        call: Call<List<AccountsResponse>>,
-                        response: Response<List<AccountsResponse>>
-                    ) {
-                        if (response.isSuccessful){
-                            accountsResponse.postValue(response.body())
-                            Log.d("HomeViewModel", "Account response: ${response.body()}")
-                        } else {
-                            errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
-                        }
-                    }
+                    fetchAndSaveTransactions("Bearer $authToken")
+                } catch (e: Exception){
+                    Log.e("HomeViewModel", "Error fetching user data: ${e.message}")
+                    errorLiveData.postValue("Error fetching user data: ${e.message}")
+                }
+            }
 
-                    override fun onFailure(call: Call<List<AccountsResponse>>, t: Throwable) {
-                        errorLiveData.postValue("Error: ${t.message}")
-                        Log.e("HomeViewModel", "Account Error: ${t.message}")
-                    }
-                })
-
-
-            RetrofitClient.retrofitInstance(authToken).infoTransactions("Bearer $authToken")
-                .enqueue(object : Callback<TransactionsResponse>{
-                    override fun onResponse(
-                        call: Call<TransactionsResponse>,
-                        response: Response<TransactionsResponse>
-                    ) {
-                        if (response.isSuccessful){
-                            transactionsResponseLiveData.postValue(response.body()?.data)
-                            Log.d("HomeViewModel", "Transactions response: ${response.body()}")
-                        } else {
-                            errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TransactionsResponse>, t: Throwable) {
-                        errorLiveData.postValue("Error: ${t.message}")
-                        Log.e("HomeViewModel", "Transactions Error: ${t.message}")
-                    }
-                })
         }
     }
+
+    private suspend fun fetchUser(token: String) {
+        try {
+            repository.fetchAndSaveUser(token)
+
+        } catch (e: Exception) {
+            Log.e("HomeViewModel", "Exception fetching user: ${e.message}")
+            errorLiveData.postValue("Exception fetching user: ${e.message}")
+        }
+    }
+
+
+    private suspend fun fetchAndSaveAccounts(token: String) {
+        try {
+            repository.fetchAndSaveAccounts(token)
+        } catch (e: Exception) {
+            Log.e("HomeViewModel", "Exception fetching accounts: ${e.message}")
+            errorLiveData.postValue("Exception fetching accounts: ${e.message}")
+        }
+    }
+
+
+    private suspend fun fetchAndSaveTransactions(token: String) {
+        try {
+            repository.fetchAndSaveTransactions(token)
+        } catch (e: Exception) {
+            Log.e("HomeViewModel", "Exception fetching transactions: ${e.message}")
+            errorLiveData.postValue("Exception fetching transactions: ${e.message}")
+        }
+    }
+
+
+    fun clearUserToken() {
+        authManager.clearToken()
+        authManager.clearUserLogged()
+    }
+
 }
