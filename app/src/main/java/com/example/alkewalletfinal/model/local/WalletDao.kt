@@ -35,4 +35,7 @@ interface WalletDao {
     @Query("SELECT * FROM tabla_cuenta WHERE userId = :userId")
     fun getAccountsByUserId(userId: Long): LiveData<List<AccountsLocal>>
 
+    @Query("SELECT * FROM tabla_transaccion WHERE userId = :userId")
+    fun getTransactionsByUserId(userId: Long): LiveData<List<TransactionsLocal>>
+
 }

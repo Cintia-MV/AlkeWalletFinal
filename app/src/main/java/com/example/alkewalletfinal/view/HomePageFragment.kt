@@ -56,6 +56,7 @@ class HomePageFragment : Fragment() {
         val walletDao: WalletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
 
         var userId : Long = 0
+        var cuentaId : Long = 0
 
         // Inicializa Repository con las instancias de walletDao y api
         repository = Repository(walletDao, api)
@@ -85,7 +86,9 @@ class HomePageFragment : Fragment() {
                 if (userAccounts.isNotEmpty()) {
                     val account = userAccounts[0]
                     binding.saldoPesosP5.text = "$ ${account.money}"
+                    cuentaId = account.id
                     Log.d("HomePageFragment", "Money: ${account.money}")
+                    Log.d("NumCuenta", account.id.toString())
                 } else {
                     Log.d("HomePageFragment", "No accounts found for userId: $userId")
                 }
@@ -110,7 +113,7 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        viewModel.getUserData(userId)
+        viewModel.getUserData()
         viewModel.fetchUserInfo()
 
 

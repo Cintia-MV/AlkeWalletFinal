@@ -53,6 +53,10 @@ class Repository(private val walletDao: WalletDao, private val api: Api) {
         return walletDao.getAccountsByUserId(userId)
     }
 
+    fun getTransactionsByUserId(userId: Long): LiveData<List<TransactionsLocal>> {
+        return walletDao.getTransactionsByUserId(userId)
+    }
+
     suspend fun insertAccounts(cuenta: AccountsLocal) {
         walletDao.insertAccounts(cuenta)
     }

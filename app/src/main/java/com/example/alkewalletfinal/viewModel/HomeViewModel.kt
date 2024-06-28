@@ -35,7 +35,7 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
     val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun getUserData(userId: Long) {
+    fun getUserData() {
         val token = authManager.getToken()
 
         token?.let { authToken ->
@@ -110,6 +110,7 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
                                 // Almacenar el userId y observar cuentas
                                 userId = userResponse.id
                                 observeAccounts(userResponse.id)
+                                observeTransactions(userResponse.id)
                             }
                         } else {
                             errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
@@ -130,6 +131,11 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
         }
     }
 
+    private fun observeTransactions(userId: Long) {
+        repository.getTransactionsByUserId(userId).observeForever { transactions ->
+            transactionsResponseLiveData.postValue(transactions)
+        }
+    }
 
     fun clearUserToken() {
         authManager.clearToken()
