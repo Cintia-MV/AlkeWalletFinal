@@ -1,7 +1,6 @@
 package com.example.alkewalletfinal.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentLoginBinding
-import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.model.local.WalletDataBase
 import com.example.alkewalletfinal.model.remote.RetrofitClient
@@ -41,8 +39,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Inicializar AuthManager
-        val authManager = AuthManager(requireContext())
 
         // Inicializa el WalletDao desde la base de datos.
         val walletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
@@ -82,9 +78,6 @@ class LoginFragment : Fragment() {
                     binding.errorTextView.visibility = View.GONE
                     Toast.makeText(requireContext(), "¡Sesión iniciada con éxito!", Toast.LENGTH_LONG).show()
 
-                    // Obtener el ID del usuario después del inicio de sesión exitoso
-                    val userId = viewModel.getUserId()
-                    Log.d("LoginFragment", "ID de usuario: $userId")
                     // Navegar al fragmento HomePage
                     findNavController().navigate(R.id.action_loginFragment_to_homePageFragment)
 

@@ -95,13 +95,6 @@ class HomePageFragment : Fragment() {
             }
         })
 
-       /* viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
-            cuenta?.let {
-                val cuentas = cuenta[0]
-                binding.saldoPesosP5.text = "$ ${cuentas.money}"
-                Log.d("HomePageFragment", "Money: ${cuentas.money}")
-            }
-        })*/
 
         val adapter = HistorialAdapter()
         binding.recyclerView.adapter = adapter

@@ -9,7 +9,6 @@ import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.model.local.entities.AccountsLocal
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
-import com.example.alkewalletfinal.model.local.entities.UsuarioLocal
 import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.UserResponse
 import kotlinx.coroutines.CoroutineScope
@@ -24,13 +23,8 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
 
     var userId: Long? = null
 
-    val userLiveData: MutableLiveData<UserResponse> = MutableLiveData()
-    private val _userResponseLiveData: MutableLiveData<UsuarioLocal> = MutableLiveData()
     private val _userResponseInfo: MutableLiveData<UserResponse> = MutableLiveData()
-
     val userResponseInfo: LiveData<UserResponse> get() = _userResponseInfo
-    //val userResponseInfo: MutableLiveData<UserResponse> = MutableLiveData()
-    val userResponseLiveData: LiveData<UsuarioLocal> get() = _userResponseLiveData
     val accountsResponse: MutableLiveData<List<AccountsLocal>> = MutableLiveData()
     val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
@@ -41,12 +35,11 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
         token?.let { authToken ->
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    //fetchUser("Bearer $authToken")
 
                     fetchAndSaveAccounts("Bearer $authToken")
 
                     fetchAndSaveTransactions("Bearer $authToken")
-                   // observeAccounts(userId)
+
                 } catch (e: Exception){
                     Log.e("HomeViewModel", "Error fetching user data: ${e.message}")
                     errorLiveData.postValue("Error fetching user data: ${e.message}")
@@ -55,22 +48,6 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
 
         }
     }
-
-   /* private suspend fun fetchUser(token: String) {
-        try {
-            repository.fetchAndSaveUser(token)
-
-            // Utiliza el DAO para obtener los datos del usuario por ID
-            repository.getUser().observeForever { user ->
-                user?.let {
-                    _userResponseLiveData.postValue(user)
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("HomeViewModel", "Exception fetching user: ${e.message}")
-            errorLiveData.postValue("Exception fetching user: ${e.message}")
-        }
-    }*/
 
 
     private suspend fun fetchAndSaveAccounts(token: String) {
@@ -139,7 +116,6 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
 
     fun clearUserToken() {
         authManager.clearToken()
-        authManager.clearUserLogged()
     }
 
 }

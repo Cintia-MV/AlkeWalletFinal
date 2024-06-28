@@ -18,24 +18,5 @@ class AuthManager (private  val context: Context) {
         prefs.edit().remove("auth_token").apply()
     }
 
-    fun clearUserLogged(){
-        prefs.edit().remove("user_logged").apply()
-    }
-
-    fun saveUserId(userId: Long){
-        prefs.edit().putLong("user_id", userId).apply()
-    }
-
-    fun getUserId(): Long{
-        return prefs.getLong("user_id", -1)
-    }
-
-    fun clearUserId(){
-        prefs.edit().remove("user_id").apply()
-    }
-
-    fun isLoggedIn(): Boolean {
-        return getUserId() != -1L
-    }
 
 }

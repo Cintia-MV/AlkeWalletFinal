@@ -8,14 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
-import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.model.response.LoginRequest
 import com.example.alkewalletfinal.model.response.LoginResponse
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.math.log
+
 
 
 // Enum que representa los diferentes errores que pueden ocurrir durante el login.
@@ -33,11 +29,11 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
 
     //LiveData para observar el estado de la validación
     private val _loginResponse = MutableLiveData<LoginResponse?>()
-    val loginResponse: LiveData<LoginResponse?> get() = _loginResponse
+
 
     // LiveData para observar el éxito del login
     private val _loginSuccess = MutableLiveData<Boolean>()
-    val loginSuccess: LiveData<Boolean> get() = _loginSuccess
+
 
     private val authManager = AuthManager(context)
 
@@ -88,11 +84,7 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
                     repository.fetchAndSaveUser(it.accessToken)
                     Log.d("LoginViewModel", "Información del usuario guardada")
 
-                    /*val userId = repository.getUserId()
-                    userId?.let{
-                        authManager.saveUserId(it)
-                        Log.d("LoginViewModel", "ID de usuario guardado: $userId")*/
-                    //}
+
 
                     Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
                 }
@@ -103,10 +95,6 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
                 }
             }
         }
-    }
-
-    fun getUserId(): Long{
-        return authManager.getUserId()
     }
 
 }
