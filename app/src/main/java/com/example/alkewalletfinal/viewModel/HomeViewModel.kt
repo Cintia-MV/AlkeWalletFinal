@@ -22,6 +22,8 @@ import retrofit2.Response
 
 class HomeViewModel(private val authManager: AuthManager, private val repository: Repository): ViewModel() {
 
+    var userId: Long? = null
+
     val userLiveData: MutableLiveData<UserResponse> = MutableLiveData()
     private val _userResponseLiveData: MutableLiveData<UsuarioLocal> = MutableLiveData()
     private val _userResponseInfo: MutableLiveData<UserResponse> = MutableLiveData()
@@ -33,7 +35,7 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
     val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun getUserData() {
+    fun getUserData(userId: Long) {
         val token = authManager.getToken()
 
         token?.let { authToken ->
@@ -44,7 +46,7 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
                     fetchAndSaveAccounts("Bearer $authToken")
 
                     fetchAndSaveTransactions("Bearer $authToken")
-                    //fetchUserInfo()
+                   // observeAccounts(userId)
                 } catch (e: Exception){
                     Log.e("HomeViewModel", "Error fetching user data: ${e.message}")
                     errorLiveData.postValue("Error fetching user data: ${e.message}")
@@ -104,6 +106,10 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
                             response.body()?.let { userResponse ->
                                 _userResponseInfo.postValue(userResponse)
                                 Log.d("HomeViewModel", "Información del usuario: ${userResponse.id}, ${userResponse.firstName}, ${userResponse.lastName}")
+
+                                // Almacenar el userId y observar cuentas
+                                userId = userResponse.id
+                                observeAccounts(userResponse.id)
                             }
                         } else {
                             errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
@@ -114,6 +120,13 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
                         errorLiveData.postValue("Error: ${t.message}")
                     }
                 })
+        }
+    }
+
+
+    private fun observeAccounts(userId: Long) {
+        repository.getAccountsByUserId(userId).observeForever { accounts ->
+            accountsResponse.postValue(accounts)
         }
     }
 

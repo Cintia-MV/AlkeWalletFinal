@@ -55,7 +55,7 @@ class HomePageFragment : Fragment() {
         // Inicializa Room para la base de datos local
         val walletDao: WalletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
 
-        val userId = authManager.getUserId()
+        var userId : Long = 0
 
         // Inicializa Repository con las instancias de walletDao y api
         repository = Repository(walletDao, api)
@@ -69,22 +69,36 @@ class HomePageFragment : Fragment() {
 
             userResponse?.let {
                 binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
+                userId = userResponse.id
                 Log.d(
                     "HomePageFragment",
                     "User: ${userResponse.firstName} ${userResponse.lastName}"
+
                 )
+                Log.d("IdUsuario", userId.toString())
             }
         })
 
+        viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuentas ->
+            cuentas?.let {
+                val userAccounts = cuentas.filter { it.userId == userId }
+                if (userAccounts.isNotEmpty()) {
+                    val account = userAccounts[0]
+                    binding.saldoPesosP5.text = "$ ${account.money}"
+                    Log.d("HomePageFragment", "Money: ${account.money}")
+                } else {
+                    Log.d("HomePageFragment", "No accounts found for userId: $userId")
+                }
+            }
+        })
 
-
-        viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
+       /* viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
             cuenta?.let {
                 val cuentas = cuenta[0]
                 binding.saldoPesosP5.text = "$ ${cuentas.money}"
                 Log.d("HomePageFragment", "Money: ${cuentas.money}")
             }
-        })
+        })*/
 
         val adapter = HistorialAdapter()
         binding.recyclerView.adapter = adapter
@@ -96,7 +110,7 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        viewModel.getUserData()
+        viewModel.getUserData(userId)
         viewModel.fetchUserInfo()
 
 
