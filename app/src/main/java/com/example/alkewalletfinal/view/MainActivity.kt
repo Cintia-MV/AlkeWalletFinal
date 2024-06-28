@@ -6,16 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.alkewalletfinal.R
+import com.example.alkewalletfinal.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    //Instancia del binding
+    private lateinit var mbinding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+       mbinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mbinding.root)
+
     }
 }
