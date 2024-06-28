@@ -6,13 +6,17 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
+/**
+ * Cliente Retrofit para configurar y obtener instancias de la API de la wallet.
+ * @author Cintia Muñoz V.
+ */
 class RetrofitClient {
 
     companion object {
         private const val BASE_URL = "http://wallet-main.eba-ccwdurgr.us-east-1.elasticbeanstalk.com/"
         private var retrofit: Retrofit? = null
 
+        //Configura y devuelve una instancia de Retrofit para la API de la wallet
         fun getApi(token: String? = null): Retrofit {
             val clientBuilder = OkHttpClient.Builder()
             if (token != null) {
@@ -28,6 +32,7 @@ class RetrofitClient {
                 .build()
         }
 
+        //Instancia de la interfaz de la API de la wallet.
         fun retrofitInstance(token: String? = null): Api {
             if (retrofit == null) {
                 retrofit = getApi(token)

@@ -2,6 +2,10 @@ package com.example.alkewalletfinal.model.response
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Clase que representa la solicitud de creación de usuario enviada a la API.
+ * @author Cintia Muñoz V.
+ */
 data class UserRequest(
 
     @SerializedName("first_name")

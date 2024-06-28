@@ -18,7 +18,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+/**
+ * Fragmento que permite al usuario registrarse creando una nueva cuenta.
+ * Maneja la validación de campos ingresados, muestra mensajes de error si hay problemas
+ * durante el registro, y navega al fragmento de inicio de sesión cuando el registro es exitoso.
+ */
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
     private lateinit var viewModel: SignUpViewModel
@@ -33,7 +37,7 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -46,21 +50,40 @@ class SignUpFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // Observa los errores de registro.
-        viewModel.signUpError.observe(viewLifecycleOwner){error ->
-            error?.let{
-                when (it){
-                    ErroresSignUp.NOMBRE_INVALIDO -> mostrarMensajeError("Debe ingresar nombre", R.id.errorNombre)
-                    ErroresSignUp.APELLIDO_INVALIDO -> mostrarMensajeError("Debe ingresar apellido", R.id.errorApellido)
-                    ErroresSignUp.EMAIL_INVALIDO -> mostrarMensajeError("Ingresar correo electrónico válido", R.id.errorEmail)
-                    ErroresSignUp.CLAVE_INVALIDA -> mostrarMensajeError("La clave debe ser mayor a 6 caracteres", R.id.errorClave)
-                    ErroresSignUp.ERROR_CREAR_USUARIO -> mostrarMensajeError("Error al crear usuario", R.id.errorGeneral)
+        viewModel.signUpError.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                when (it) {
+                    ErroresSignUp.NOMBRE_INVALIDO -> mostrarMensajeError(
+                        "Debe ingresar nombre",
+                        R.id.errorNombre
+                    )
+
+                    ErroresSignUp.APELLIDO_INVALIDO -> mostrarMensajeError(
+                        "Debe ingresar apellido",
+                        R.id.errorApellido
+                    )
+
+                    ErroresSignUp.EMAIL_INVALIDO -> mostrarMensajeError(
+                        "Ingresar correo electrónico válido",
+                        R.id.errorEmail
+                    )
+
+                    ErroresSignUp.CLAVE_INVALIDA -> mostrarMensajeError(
+                        "La clave debe ser mayor a 6 caracteres",
+                        R.id.errorClave
+                    )
+
+                    ErroresSignUp.ERROR_CREAR_USUARIO -> mostrarMensajeError(
+                        "Error al crear usuario",
+                        R.id.errorGeneral
+                    )
                 }
             }
         }
 
         // Observa el éxito del registro.
-        viewModel.signUpSuccess.observe(viewLifecycleOwner){exito ->
-            if (exito){
+        viewModel.signUpSuccess.observe(viewLifecycleOwner) { exito ->
+            if (exito) {
                 mostrarMensajeExito("Usuario registrado con éxito")
                 findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
             }
@@ -82,11 +105,12 @@ class SignUpFragment : Fragment() {
             }
 
             // Registrar el usuario
-            viewModel.agregarUsuario(nombre,apellido, email, clave, roledId)
+            viewModel.agregarUsuario(nombre, apellido, email, clave, roledId)
 
         }
 
-        binding.loginP4.setOnClickListener{
+        //Navega al login
+        binding.loginP4.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_loginFragment)
         }
     }

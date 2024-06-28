@@ -11,7 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+/**
+ * ViewModel para manejar la lógica relacionada con las solicitudes de transacción.
+ *
+ * Este ViewModel gestiona la validación de ingreso de monto y nota, así como la creación de transacciones a través de Retrofit.
+ *
+ * @property authManager Gestor de autenticación para obtener y manejar el token de autenticación.
+ */
 enum class ErroresIngresoMonto {
     MONTO_INVALIDO,
     NOTA_INVALIDA
@@ -48,17 +54,19 @@ class RequestViewModel(private val authManager: AuthManager) : ViewModel(){
         _ingresoMontoExitoso.value = true
     }
 
-
+    //Método privado para validar el formato del monto ingresado.
     private fun validarMontoIngreso(monto: String): Boolean{
         val montoIngrRegex = Regex("^[0-9]+(\\.[0-9]{1,2})?\$")
         return montoIngrRegex.matches(monto)
     }
 
+    //Método privado para validar que la nota ingresada no esté en blanco.
     private fun validarNotaIngreso(nota: String):Boolean{
         return nota.isNotBlank()
 
     }
 
+    //Método para crear una transacción utilizando Retrofit.
     fun createTransaction(transaccion: TransactionsRequest){
         val token = authManager.getToken()
 
@@ -84,15 +92,5 @@ class RequestViewModel(private val authManager: AuthManager) : ViewModel(){
                 })
         }
 
-
-
-
     }
-
-
-
-
-
-
-
 }

@@ -4,6 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Entidad de la base de datos que representa una transaccion local.
+ * @author Cintia Muñoz V.
+ */
 @Entity(tableName = "tabla_transaccion")
 data class TransactionsLocal(
     @PrimaryKey

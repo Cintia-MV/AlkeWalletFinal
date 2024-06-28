@@ -20,7 +20,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+/**
+ * Fragmento que permite al usuario realizar una transferencia de dinero.
+ * Maneja la validación del monto ingresado, la creación de transacciones y muestra mensajes de éxito o error según el resultado de la transferencia.
+ */
 class SendFragment : Fragment() {
    private lateinit var binding: FragmentSendBinding
    private lateinit var viewModel: SendViewModel
@@ -45,7 +48,7 @@ class SendFragment : Fragment() {
         //Inicializar AuthManager
         authManager = AuthManager(requireContext())
 
-// Inicializar el ViewModel
+        // Inicializar el ViewModel
         viewModel = ViewModelProvider(this, SendViewModelFactory(authManager)).get(SendViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
@@ -80,12 +83,13 @@ class SendFragment : Fragment() {
                     userId = userId,
                     toAccountId = toAccountId
                 )
-
+                // Llamar al método en el ViewModel para crear la transacción de envío.
                 viewModel.crearTransSend(transaccion)
 
             }
         }
 
+        // Observar el resultado de la transacción y manejarlo.
         viewModel.transactionReult.observe(viewLifecycleOwner){result ->
             if (result){
                 mostrarMensajeExito("Transferencia realizada con éxito")
@@ -104,7 +108,6 @@ class SendFragment : Fragment() {
             val monto = binding.ingresarMonto.text.toString()
             val nota = binding.notaEnviar.text.toString()
             viewModel.validarTransferencia(monto, nota)
-
 
         }
 

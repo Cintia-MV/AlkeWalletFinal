@@ -4,6 +4,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Entidad de la base de datos que representa un usuario local.
+ * @author Cintia Muñoz V.
+ */
 @Entity(tableName = "tabla_usuario")
 data class UsuarioLocal(
     @PrimaryKey

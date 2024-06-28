@@ -9,6 +9,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * ViewModel para manejar la lógica relacionada con el registro de usuarios.
+ *
+ * Este ViewModel gestiona la validación de nombre, apellido, correo electrónico y contraseña durante el registro,
+ * así como la creación de usuarios a través de Retrofit.
+ */
 enum class ErroresSignUp {
     NOMBRE_INVALIDO,
     APELLIDO_INVALIDO,
@@ -27,7 +33,6 @@ class SignUpViewModel: ViewModel() {
 
     // Método para agregar un nuevo usuario.
     fun agregarUsuario(nombre: String, apellido: String, email: String, clave: String, roledId: Int) {
-
 
         // Validar los campos de entrada
         if (!validarNombre(nombre)) {
@@ -68,7 +73,6 @@ class SignUpViewModel: ViewModel() {
                 _signUpError.value = ErroresSignUp.ERROR_CREAR_USUARIO
             }
         })
-
 
     }
 

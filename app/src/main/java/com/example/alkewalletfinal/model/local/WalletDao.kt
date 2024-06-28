@@ -9,11 +9,27 @@ import com.example.alkewalletfinal.model.local.entities.AccountsLocal
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
 import com.example.alkewalletfinal.model.local.entities.UsuarioLocal
 
+/**
+ * DAO para realizar operaciones en la base de datos de la wallet.
+ * @author Cintia Muñoz V.
+ */
 @Dao
 interface WalletDao {
+
+    /**
+     * Inserta un nuevo usuario en la base de datos. Si el usuario ya existe, lo reemplaza.
+     *
+     * @param usuario El usuario a insertar.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(usuario: UsuarioLocal)
 
+    /**
+     * Obtiene un usuario de la base de datos por su ID.
+     *
+     * @param id El ID del usuario.
+     * @return Un LiveData que contiene el usuario.
+     */
     @Query("SELECT * FROM tabla_usuario WHERE id= :id")
     fun getUsuarios(id: Long): LiveData<UsuarioLocal>
 
@@ -32,9 +48,21 @@ interface WalletDao {
     @Query("SELECT * FROM tabla_transaccion WHERE id= :id")
     fun getTransactions(id: Long): LiveData<TransactionsLocal>
 
+    /**
+     * Obtiene todas las cuentas de la base de datos asociadas a un usuario específico por su ID de usuario.
+     *
+     * @param userId El ID del usuario.
+     * @return Un LiveData que contiene una lista de cuentas asociadas al usuario.
+     */
     @Query("SELECT * FROM tabla_cuenta WHERE userId = :userId")
     fun getAccountsByUserId(userId: Long): LiveData<List<AccountsLocal>>
 
+    /**
+     * Obtiene todas las transacciones de la base de datos asociadas a un usuario específico por su ID de usuario.
+     *
+     * @param userId El ID del usuario.
+     * @return Un LiveData que contiene una lista de transacciones asociadas al usuario.
+     */
     @Query("SELECT * FROM tabla_transaccion WHERE userId = :userId")
     fun getTransactionsByUserId(userId: Long): LiveData<List<TransactionsLocal>>
 

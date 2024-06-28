@@ -11,7 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
+/**
+ * ViewModel para manejar la lógica relacionada con el envío de transferencias.
+ *
+ * Este ViewModel gestiona la validación de monto y nota de transferencia, así como la creación de transacciones a través de Retrofit.
+ *
+ * @property authManager Gestor de autenticación para obtener y manejar el token de autenticación.
+ */
 enum class ErroresTransferencia {
     MONTO_INVALIDO,
     NOTA_INVALIDA
@@ -29,6 +35,7 @@ class SendViewModel(private val authManager: AuthManager) : ViewModel() {
     private val _transactionResult = MutableLiveData<Boolean>()
     val transactionReult: LiveData<Boolean> = _transactionResult
 
+    // LiveData para observar errores generales
     private val _errorLiveData = MutableLiveData<String>()
     val errorLiveData: LiveData<String> = _errorLiveData
 
@@ -38,7 +45,6 @@ class SendViewModel(private val authManager: AuthManager) : ViewModel() {
             _transferenciaError.value = ErroresTransferencia.MONTO_INVALIDO
             return
         }
-
         if (!validarNota(nota)){
             _transferenciaError.value = ErroresTransferencia.NOTA_INVALIDA
             return
@@ -49,17 +55,18 @@ class SendViewModel(private val authManager: AuthManager) : ViewModel() {
         _transferenciaExitosa.value = true
     }
 
+    //Método privado para validar el formato del monto ingresado.
     private fun validarMonto(monto: String): Boolean{
         val montoRegex = Regex("^[0-9]+(\\.[0-9]{1,2})?\$")
         return montoRegex.matches(monto)
     }
 
+    //Método privado para validar que la nota ingresada no esté en blanco.
     private fun validarNota(nota: String):Boolean{
         return nota.isNotBlank()
     }
 
-
-
+    //Método para crear una transacción utilizando Retrofit.
     fun crearTransSend(transaccion: TransactionsRequest){
         val token = authManager.getToken()
 

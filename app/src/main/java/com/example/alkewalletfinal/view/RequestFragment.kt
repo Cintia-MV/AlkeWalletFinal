@@ -20,8 +20,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+/**
+ * Fragmento que permite al usuario realizar una solicitud de ingreso de dinero.
+ * Maneja la validación del monto ingresado y la creación de transacciones.
+ * También muestra mensajes de éxito o error según el resultado de la transacción.
+ */
 class RequestFragment : Fragment() {
+
     private lateinit var binding: FragmentRequestBinding
     private lateinit var viewModel: RequestViewModel
     private lateinit var authManager: AuthManager

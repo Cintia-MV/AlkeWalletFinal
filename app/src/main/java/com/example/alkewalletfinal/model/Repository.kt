@@ -11,9 +11,16 @@ import com.example.alkewalletfinal.model.response.LoginResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-
+/**
+ * Repositorio que gestiona la obtención y almacenamiento de datos desde y hacia la base de datos local y la API remota.
+ *
+ * @property walletDao DAO para acceder a la base de datos local.
+ * @property api Interfaz para realizar llamadas a la API remota.
+ * @author Cintia Muñoz V.
+ */
 class Repository(private val walletDao: WalletDao, private val api: Api) {
 
+    //Obtiene y guarda la información del usuario desde la API.
     suspend fun fetchAndSaveUser(token: String) {
         withContext(Dispatchers.IO) {
             val response = api.infoUser(token).execute()
@@ -26,15 +33,17 @@ class Repository(private val walletDao: WalletDao, private val api: Api) {
         }
     }
 
+    //Obtiene las cuentas del usuario por su ID desde la base de datos local.
     fun getAccountsByUserId(userId: Long): LiveData<List<AccountsLocal>> {
         return walletDao.getAccountsByUserId(userId)
     }
 
+    //Obtiene las transacciones del usuario por su ID desde la base de datos local.
     fun getTransactionsByUserId(userId: Long): LiveData<List<TransactionsLocal>> {
         return walletDao.getTransactionsByUserId(userId)
     }
 
-
+    //Obtiene y guarda las cuentas del usuario desde la API.
     suspend fun fetchAndSaveAccounts(token: String) {
         withContext(Dispatchers.IO) {
             val response = api.infoAccounts(token).execute()
@@ -47,7 +56,7 @@ class Repository(private val walletDao: WalletDao, private val api: Api) {
         }
     }
 
-
+    //Obtiene y guarda las transacciones del usuario desde la API.
     suspend fun fetchAndSaveTransactions(token: String) {
         withContext(Dispatchers.IO) {
             try {
@@ -72,7 +81,7 @@ class Repository(private val walletDao: WalletDao, private val api: Api) {
         }
     }
 
-
+    //Inicio de sesión del usuario utilizando la API.
     suspend fun login(loginRequest: LoginRequest): LoginResponse? {
         return withContext(Dispatchers.IO) {
             val response = api.login(loginRequest).execute()

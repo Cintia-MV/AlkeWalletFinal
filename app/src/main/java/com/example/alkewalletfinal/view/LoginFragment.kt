@@ -17,9 +17,13 @@ import com.example.alkewalletfinal.viewModel.ErroresLogin
 import com.example.alkewalletfinal.viewModel.LoginViewModel
 import com.example.alkewalletfinal.viewModel.factory.LoginViewModelFactory
 
-
+/**
+ * Fragmento que maneja la interfaz de inicio de sesión de usuario.
+ * Permite a los usuarios ingresar sus credenciales y realizar acciones como iniciar sesión o navegar hacia la creación de una nueva cuenta.
+ */
 class LoginFragment : Fragment() {
 
+    //Instancias de binding y viewModel
     private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
 
@@ -39,7 +43,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         // Inicializa el WalletDao desde la base de datos.
         val walletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
 
@@ -53,7 +56,6 @@ class LoginFragment : Fragment() {
         // Asigna el ViewModel al binding y establece el lifecycleOwner.
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
 
         // Observa los cambios en los errores de login.
         viewModel.loginError.observe(viewLifecycleOwner){ error ->
@@ -85,14 +87,12 @@ class LoginFragment : Fragment() {
             }
         }
 
-
         //Botón para iniciar sesión
         binding.btnP3.setOnClickListener {
             val  email = binding.hintEmailP3.text.toString()
             val clave = binding.claveHintP3.text.toString()
             viewModel.validarUsuario(email, clave)
         }
-
 
         //Botón para crear una nueva cuenta
         binding.crearCtaP3.setOnClickListener{

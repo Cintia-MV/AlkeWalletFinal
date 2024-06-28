@@ -13,7 +13,14 @@ import com.example.alkewalletfinal.model.response.LoginResponse
 import kotlinx.coroutines.launch
 
 
-
+/**
+ * ViewModel para manejar la lógica de inicio de sesión.
+ *
+ * Este ViewModel gestiona la validación de credenciales de usuario, el inicio de sesión y el manejo de errores.
+ *
+ * @property repository Repositorio para acceder a los datos y realizar operaciones relacionadas con el inicio de sesión.
+ * @property context Contexto de la aplicación para inicializar AuthManager.
+ */
 // Enum que representa los diferentes errores que pueden ocurrir durante el login.
 enum class ErroresLogin{
     emailNoValido,
@@ -30,11 +37,10 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
     //LiveData para observar el estado de la validación
     private val _loginResponse = MutableLiveData<LoginResponse?>()
 
-
     // LiveData para observar el éxito del login
     private val _loginSuccess = MutableLiveData<Boolean>()
 
-
+    //Instancia de authManager
     private val authManager = AuthManager(context)
 
     // Método para validar las credenciales del usuario.
@@ -64,12 +70,13 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
         return clave.length >= 6
     }
 
+    //Función para el inicio de sesión
     private fun iniciarSesion(email: String, password: String) {
         val loginRequest = LoginRequest(email, password)
 
         viewModelScope.launch {
             try {
-                val loginResponse = repository.login(loginRequest) // Asegúrate de que el repositorio tenga un método adecuado para esto
+                val loginResponse = repository.login(loginRequest)
 
                 // Procesar la respuesta del repositorio
                 loginResponse?.let {
@@ -83,8 +90,6 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
                     // Llamar a fetchAndSaveUser después del inicio de sesión exitoso
                     repository.fetchAndSaveUser(it.accessToken)
                     Log.d("LoginViewModel", "Información del usuario guardada")
-
-
 
                     Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
                 }

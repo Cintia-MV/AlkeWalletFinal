@@ -9,8 +9,12 @@ import androidx.navigation.fragment.findNavController
 import com.example.alkewalletfinal.R
 import com.example.alkewalletfinal.databinding.FragmentProfileBinding
 
-
+/**
+ * Fragmento que muestra el perfil del usuario.
+ * Permite al usuario navegar de regreso a la pantalla de inicio (HomePageFragment).
+ */
 class ProfileFragment : Fragment() {
+    //Instancia de binding
     private lateinit var binding: FragmentProfileBinding
 
 
@@ -30,6 +34,7 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //Navegar de regreso a la pantalla de inicio (HomePageFragment).
         binding.volver.setOnClickListener{
             findNavController().navigate(R.id.action_profileFragment_to_homePageFragment)
         }

@@ -6,6 +6,12 @@ import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.viewModel.HomeViewModel
 
+/**
+ * Factory para crear instancias de [HomeViewModel].
+ *
+ * @property authManager El administrador de autenticación utilizado para gestionar el estado de autenticación y los tokens.
+ * @property repository El repositorio que proporciona datos al ViewModel.
+ */
 class HomeViewModelFactory (
     private val authManager: AuthManager,
     private val repository: Repository

@@ -3,25 +3,25 @@ package com.example.alkewalletfinal
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.alkewalletfinal.databinding.ItemListBinding
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
-import com.example.alkewalletfinal.model.response.Transactions
 
+/**
+ * Adaptador para mostrar la lista de transacciones en un RecyclerView.
+ */
 class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransaccionesVH>() {
     private var listaTransaccion = listOf<TransactionsLocal>()
     private val transaccionSelected = MutableLiveData<TransactionsLocal>() //Cambiar a local
 
 
+    //Actualiza la lista de transacciones mostradas en el RecyclerView.
     fun actualizar(transaccion: List<TransactionsLocal>){
         listaTransaccion = transaccion
         notifyDataSetChanged()
     }
-
-    fun seleccionarTransaccion(): LiveData<TransactionsLocal> = transaccionSelected
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaTransaccionesVH {
@@ -40,6 +40,7 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
     inner class ListaTransaccionesVH(private val binding: ItemListBinding):
             RecyclerView.ViewHolder(binding.root), View.OnClickListener{
 
+                //Vincular los datos de la transacción al ViewHolder.
                 fun bind(transaccion: TransactionsLocal){
                     Glide.with(binding.imgUsuario).load(R.drawable.userp).centerCrop().into(binding.imgUsuario)
                     binding.nombreUsuario.text = transaccion.concept
@@ -54,7 +55,6 @@ class HistorialAdapter: RecyclerView.Adapter<HistorialAdapter.ListaTransacciones
                     }
 
                     Glide.with(binding.flecha).load(imgFlecha).centerCrop().into(binding.flecha)
-
 
                     itemView.setOnClickListener(this)
                 }

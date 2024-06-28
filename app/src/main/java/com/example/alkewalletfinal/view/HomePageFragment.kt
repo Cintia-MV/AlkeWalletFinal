@@ -22,12 +22,16 @@ import com.example.alkewalletfinal.model.remote.RetrofitClient
 import com.example.alkewalletfinal.viewModel.HomeViewModel
 import com.example.alkewalletfinal.viewModel.factory.HomeViewModelFactory
 
-
+/**
+ * Fragmento principal de la página de inicio que muestra la información del usuario,
+ * cuentas y transacciones, y proporciona navegación a otras partes de la aplicación.
+ */
 class HomePageFragment : Fragment() {
     private lateinit var binding: FragmentHomePageBinding
     private lateinit var viewModel: HomeViewModel
     private lateinit var authManager: AuthManager
     private lateinit var repository: Repository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,17 +60,18 @@ class HomePageFragment : Fragment() {
         val walletDao: WalletDao = WalletDataBase.getDataBase(requireContext()).getWalletDao()
 
         var userId : Long = 0
-        var cuentaId : Long = 0
 
         // Inicializa Repository con las instancias de walletDao y api
         repository = Repository(walletDao, api)
+
+        // Inicializar el ViewModel con el Factory personalizado
         viewModel = ViewModelProvider(
             this,
             HomeViewModelFactory(authManager, repository)
         ).get(HomeViewModel::class.java)
 
+        // Observar la información del usuario para actualizar la vista cuando cambie
         viewModel.userResponseInfo.observe(viewLifecycleOwner, Observer { userResponse ->
-
 
             userResponse?.let {
                 binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
@@ -80,32 +85,34 @@ class HomePageFragment : Fragment() {
             }
         })
 
+        // Observar la lista de cuentas del usuario para actualizar la vista cuando cambie
         viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuentas ->
             cuentas?.let {
                 val userAccounts = cuentas.filter { it.userId == userId }
                 if (userAccounts.isNotEmpty()) {
                     val account = userAccounts[0]
                     binding.saldoPesosP5.text = "$ ${account.money}"
-                    cuentaId = account.id
+
                     Log.d("HomePageFragment", "Money: ${account.money}")
-                    Log.d("NumCuenta", account.id.toString())
                 } else {
                     Log.d("HomePageFragment", "No accounts found for userId: $userId")
                 }
             }
         })
 
-
+        // Configurar el adaptador para el RecyclerView que muestra el historial de transacciones
         val adapter = HistorialAdapter()
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // Observar la lista de transacciones para actualizar el RecyclerView cuando cambie
         viewModel.transactionsResponseLiveData.observe(viewLifecycleOwner, Observer { transaction ->
             transaction?.let {
                 adapter.actualizar(it)
             }
         })
 
+        // Iniciar la obtención de datos del usuario y las actualizaciones de información al cargar el fragmento
         viewModel.getUserData()
         viewModel.fetchUserInfo()
 
@@ -120,12 +127,10 @@ class HomePageFragment : Fragment() {
             findNavController().navigate(R.id.action_homePageFragment_to_sendFragment)
         }
 
-
-
+        //Clic en botón enviar dinero para navegar hacia el depósito
         binding.btnIngresarDinP5.setOnClickListener {
             findNavController().navigate(R.id.action_homePageFragment_to_requestFragment)
         }
     }
-
 
 }

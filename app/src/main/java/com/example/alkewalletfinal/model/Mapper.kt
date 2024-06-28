@@ -7,7 +7,11 @@ import com.example.alkewalletfinal.model.response.AccountsResponse
 import com.example.alkewalletfinal.model.response.Transactions
 import com.example.alkewalletfinal.model.response.UserResponse
 
-
+/**
+ * Convierte un objeto de respuesta de usuario (`UserResponse`) en un objeto local de usuario (`UsuarioLocal`).
+ * @author Cintia Muñoz V.
+ *
+ */
 fun usuarioResponseInter(usuario: UserResponse): UsuarioLocal {
     return UsuarioLocal(
         id = usuario.id,
@@ -22,6 +26,10 @@ fun usuarioResponseInter(usuario: UserResponse): UsuarioLocal {
     )
 }
 
+/**
+ * Convierte un objeto de respuesta de cuenta (`AccountsResponse`) en un objeto local de cuenta (`AccountsLocal`).
+ *
+ */
 fun cuentaResponseInter(cuenta: AccountsResponse): AccountsLocal{
     return AccountsLocal(
         id = cuenta.id,
@@ -35,6 +43,10 @@ fun cuentaResponseInter(cuenta: AccountsResponse): AccountsLocal{
     )
 }
 
+/**
+ * Convierte un objeto de respuesta de transacción (`Transactions`) en un objeto local de transacción (`TransactionsLocal`).
+ *
+ */
 fun transactionResponseInter(transaccion: Transactions): TransactionsLocal{
     return TransactionsLocal(
         id = transaccion.id,

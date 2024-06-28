@@ -2,6 +2,10 @@ package com.example.alkewalletfinal.model.response
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Clase que representa una transacción recibida desde la API
+ * @author Cintia Muñoz V.
+ */
 data class Transactions(
     val id: Long,
     val amount: String,
