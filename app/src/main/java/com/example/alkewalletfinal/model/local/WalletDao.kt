@@ -17,6 +17,9 @@ interface WalletDao {
     @Query("SELECT * FROM tabla_usuario WHERE id= :id")
     fun getUsuarios(id: Long): LiveData<UsuarioLocal>
 
+    @Query("SELECT id FROM tabla_usuario LIMIT 1 ")
+    fun getUserId(): Long?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccounts(cuenta: AccountsLocal)
 

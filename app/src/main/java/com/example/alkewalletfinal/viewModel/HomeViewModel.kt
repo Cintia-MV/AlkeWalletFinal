@@ -5,16 +5,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.alkewalletfinal.model.AuthManager
 import com.example.alkewalletfinal.model.Repository
 import com.example.alkewalletfinal.model.local.entities.AccountsLocal
 import com.example.alkewalletfinal.model.local.entities.TransactionsLocal
 import com.example.alkewalletfinal.model.local.entities.UsuarioLocal
 import com.example.alkewalletfinal.model.remote.RetrofitClient
-import com.example.alkewalletfinal.model.response.AccountsResponse
-import com.example.alkewalletfinal.model.response.Transactions
-import com.example.alkewalletfinal.model.response.TransactionsResponse
 import com.example.alkewalletfinal.model.response.UserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,25 +19,32 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class HomeViewModel(private val authManager: AuthManager, private val repository: Repository): ViewModel() {
 
+    val userLiveData: MutableLiveData<UserResponse> = MutableLiveData()
     private val _userResponseLiveData: MutableLiveData<UsuarioLocal> = MutableLiveData()
+    private val _userResponseInfo: MutableLiveData<UserResponse> = MutableLiveData()
+
+    val userResponseInfo: LiveData<UserResponse> get() = _userResponseInfo
+    //val userResponseInfo: MutableLiveData<UserResponse> = MutableLiveData()
     val userResponseLiveData: LiveData<UsuarioLocal> get() = _userResponseLiveData
     val accountsResponse: MutableLiveData<List<AccountsLocal>> = MutableLiveData()
     val transactionsResponseLiveData: MutableLiveData<List<TransactionsLocal>> = MutableLiveData()
     val errorLiveData: MutableLiveData<String> = MutableLiveData()
 
-    fun getUserData(userId: Long) {
+    fun getUserData() {
         val token = authManager.getToken()
 
         token?.let { authToken ->
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    fetchUser("Bearer $authToken", userId)
+                    //fetchUser("Bearer $authToken")
 
                     fetchAndSaveAccounts("Bearer $authToken")
 
                     fetchAndSaveTransactions("Bearer $authToken")
+                    //fetchUserInfo()
                 } catch (e: Exception){
                     Log.e("HomeViewModel", "Error fetching user data: ${e.message}")
                     errorLiveData.postValue("Error fetching user data: ${e.message}")
@@ -51,12 +54,12 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
         }
     }
 
-    private suspend fun fetchUser(token: String, userId: Long) {
+   /* private suspend fun fetchUser(token: String) {
         try {
             repository.fetchAndSaveUser(token)
 
             // Utiliza el DAO para obtener los datos del usuario por ID
-            repository.getUser(userId).observeForever { user ->
+            repository.getUser().observeForever { user ->
                 user?.let {
                     _userResponseLiveData.postValue(user)
                 }
@@ -65,7 +68,7 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
             Log.e("HomeViewModel", "Exception fetching user: ${e.message}")
             errorLiveData.postValue("Exception fetching user: ${e.message}")
         }
-    }
+    }*/
 
 
     private suspend fun fetchAndSaveAccounts(token: String) {
@@ -84,6 +87,33 @@ class HomeViewModel(private val authManager: AuthManager, private val repository
         } catch (e: Exception) {
             Log.e("HomeViewModel", "Exception fetching transactions: ${e.message}")
             errorLiveData.postValue("Exception fetching transactions: ${e.message}")
+        }
+    }
+
+    fun fetchUserInfo() {
+        val token = authManager.getToken()
+
+        token?.let { authToken ->
+            RetrofitClient.retrofitInstance(authToken).infoUser("Bearer $authToken")
+                .enqueue(object : Callback<UserResponse> {
+                    override fun onResponse(
+                        call: Call<UserResponse>,
+                        response: Response<UserResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { userResponse ->
+                                _userResponseInfo.postValue(userResponse)
+                                Log.d("HomeViewModel", "Información del usuario: ${userResponse.id}, ${userResponse.firstName}, ${userResponse.lastName}")
+                            }
+                        } else {
+                            errorLiveData.postValue("Error: ${response.code()} ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                        errorLiveData.postValue("Error: ${t.message}")
+                    }
+                })
         }
     }
 

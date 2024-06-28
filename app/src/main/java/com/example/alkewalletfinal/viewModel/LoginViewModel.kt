@@ -83,6 +83,18 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
                     _loginSuccess.value = true
 
                     Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
+
+                    // Llamar a fetchAndSaveUser después del inicio de sesión exitoso
+                    repository.fetchAndSaveUser(it.accessToken)
+                    Log.d("LoginViewModel", "Información del usuario guardada")
+
+                    /*val userId = repository.getUserId()
+                    userId?.let{
+                        authManager.saveUserId(it)
+                        Log.d("LoginViewModel", "ID de usuario guardado: $userId")*/
+                    //}
+
+                    Log.d("LoginViewModel", "Token recibido: ${it.accessToken}")
                 }
             } catch (e: Exception) {
                 _loginError.value = when (e.message) {
@@ -93,5 +105,8 @@ class LoginViewModel (private val repository: Repository, context: Context) : Vi
         }
     }
 
+    fun getUserId(): Long{
+        return authManager.getUserId()
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.example.alkewalletfinal.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -80,6 +81,10 @@ class LoginFragment : Fragment() {
                 null -> {
                     binding.errorTextView.visibility = View.GONE
                     Toast.makeText(requireContext(), "¡Sesión iniciada con éxito!", Toast.LENGTH_LONG).show()
+
+                    // Obtener el ID del usuario después del inicio de sesión exitoso
+                    val userId = viewModel.getUserId()
+                    Log.d("LoginFragment", "ID de usuario: $userId")
                     // Navegar al fragmento HomePage
                     findNavController().navigate(R.id.action_loginFragment_to_homePageFragment)
 

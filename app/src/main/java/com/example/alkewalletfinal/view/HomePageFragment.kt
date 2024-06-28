@@ -64,17 +64,19 @@ class HomePageFragment : Fragment() {
             HomeViewModelFactory(authManager, repository)
         ).get(HomeViewModel::class.java)
 
-        viewModel.userResponseLiveData.observe(viewLifecycleOwner, Observer { userResponse ->
+        viewModel.userResponseInfo.observe(viewLifecycleOwner, Observer { userResponse ->
 
 
             userResponse?.let {
                 binding.saludoP5.text = "Hola, ${userResponse.firstName} ${userResponse.lastName}"
                 Log.d(
                     "HomePageFragment",
-                    "User: ${userResponse.firstName} ${userResponse.firstName}"
+                    "User: ${userResponse.firstName} ${userResponse.lastName}"
                 )
             }
         })
+
+
 
         viewModel.accountsResponse.observe(viewLifecycleOwner, Observer { cuenta ->
             cuenta?.let {
@@ -94,16 +96,8 @@ class HomePageFragment : Fragment() {
             }
         })
 
-        viewModel.getUserData(userId)
-
-       /* val userId = authManager.getUserId()
-        if (userId != -1L){
-            viewModel.getUserData(userId)
-        } else {
-            Log.e("HomePageFragment", "User ID is invalid")
-        }*/
-
-
+        viewModel.getUserData()
+        viewModel.fetchUserInfo()
 
 
         //Clic en la imagen para navegar hacia la configuración del perfil

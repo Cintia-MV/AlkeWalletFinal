@@ -32,6 +32,11 @@ class Repository(private val walletDao: WalletDao, private val api: Api) {
         return walletDao.getUsuarios(id)
     }
 
+    suspend fun getUserId(): Long? {
+        return walletDao.getUserId()
+    }
+
+
     suspend fun fetchAndSaveUser(token: String) {
         withContext(Dispatchers.IO) {
             val response = api.infoUser(token).execute()
