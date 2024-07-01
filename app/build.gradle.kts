@@ -112,4 +112,19 @@ dependencies {
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
     // ...with Java.
     androidTestAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+
+    // Fragment testing
+    debugImplementation ("androidx.fragment:fragment-testing:1.5.7")
+
+    // Mockito for testing
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+    androidTestImplementation ("org.mockito:mockito-android:4.0.0")
+    // Mockito-Kotlin for Kotlin support
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+    // mockk for testing
+    testImplementation ("io.mockk:mockk:1.12.0")
+    androidTestImplementation ("io.mockk:mockk-android:1.12.0")
+    // Fragment testing
+    debugImplementation ("androidx.fragment:fragment-testing:1.5.7")
 }
